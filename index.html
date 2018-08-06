@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h3>Staff</h3>	
+			<div class="row">
+				<div class="col">
+					<div id="staff"></div>
+				</div>
+			</div>
+			<hr/>
+			<h3>Players</h3>
+			<div class="row">
+				<div class="col">
+					<div id="players"></div>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyAt6CFg2KVVI91_3K-5no71DgczZmizbsg",
+		    authDomain: "rcswebsite2.firebaseapp.com",
+		    databaseURL: "https://rcswebsite2.firebaseio.com",
+		    projectId: "rcswebsite2",
+		    storageBucket: "rcswebsite2.appspot.com",
+		    messagingSenderId: "738149226043"
+		  };
+		  firebase.initializeApp(config);
+		</script>
+		<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="node_modules/axios/dist/axios.min.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>
