@@ -107,7 +107,7 @@ function updatePlayersDiv(players){
 function getTeam(){
 	let team = database.ref('/Team/Staff').orderByKey();
 	team.on('value', function(snapshot){
-		let results = toArray(snapshot.val()) || [];
+		let results = toArray(snapshot.val()).filter(e => { return e.Active === true; }) || [];
 		updateStaffDiv(results);
 	})
 }
@@ -115,7 +115,7 @@ function getTeam(){
 function getPlayers(){
 	let players = database.ref('/Team/Players').orderByKey();
 	players.on('value', function(snapshot){
-		let results = toArray(snapshot.val()) || [];
+		let results = toArray(snapshot.val()).filter(e => { return e.Active === true; }) || [];
 		updatePlayersDiv(results);
 	})
 }
