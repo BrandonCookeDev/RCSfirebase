@@ -16,39 +16,64 @@ function toArray(o){
 	return elements;
 }
 
-function getStaffPicture(name){
-	let pic = storage.ref().child('Staff/' + name).getDownloadURL();
-	return pic;
+function getStaffPicture(staffObj){
+	return storage.ref().child('Staff/' + staffObj.Picture).getDownloadURL()
+		.then(url => {
+			staffObj.PictureUrl = url;
+			return (staffObj);
+		})
+		.catch(e => {
+			console.warn(e);
+			return staffObj;
+		})
 }
 
-function getPlayerPicture(name){
-	return storage.ref().child('Player/' + name)
+function getPlayerPicture(playerObj){
+	return storage.ref().child('Player/' + playerObj.Picture).getDownloadURL()
+		.then(url => {
+			staffObj.PictureUrl = url;
+			return (staffObj);
+		})
+		.catch(e => {
+			console.warn(e);
+			return staffObj;
+		})
 }
 
 function getTeam(){
 	let getTeam = database.ref('/Team/Staff').orderByKey();
 	getTeam.on('value', function(snapshot){
 		let results = toArray(snapshot.val()) || [];
-		let divs = results.map(member => {
-			let tag = member.key;
-			return `
-			<div>
-				<h4>${tag}</h4>
-				<span>
-					<img src="${getStaffPicture(member.Picture)}" height="100px" />
-				</span>
-				<span>
-					<ul>
-						<li><label>Name: </label> ${member.Name}</li>
-						<li><label>Twitter: </label> <a href="twitter.com/${member.Twitter}">@${member.Twitter}</a></li>
-						<li><label>Bio: </label> ${member.Bio}</li>
-					</ul>
-				</span>
-			</div>
-			`;
+
+		let promises = [];
+		promises = results.map(member => {
+			return getStaffPicture(member);
 		})
 
-		staffDiv.innerHTML = divs;
+		Promise.all(promises)
+			.then(members => {
+
+			let divs = members.map(member => {
+				let tag = member.key;
+				return `
+				<div>
+					<h4>${tag}</h4>
+					<span>
+						<img src="${member.PictureUrl}" height="100px" />
+					</span>
+					<span>
+						<ul>
+							<li><label>Name: </label> ${member.Name}</li>
+							<li><label>Twitter: </label> <a href="twitter.com/${member.Twitter}">@${member.Twitter}</a></li>
+							<li><label>Bio: </label> ${member.Bio}</li>
+						</ul>
+					</span>
+				</div>
+				`;
+			})
+
+			staffDiv.innerHTML = divs;
+		}).catch(console.error);
 	})
 }
 
